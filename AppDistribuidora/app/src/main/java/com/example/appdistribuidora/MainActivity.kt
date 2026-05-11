@@ -14,9 +14,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
 import com.example.appdistribuidora.navigation.AppScreen
+import com.example.appdistribuidora.ui.CatalogoScreen
 import com.example.appdistribuidora.ui.DespachoScreen
 import com.example.appdistribuidora.ui.LoginScreen
 import com.example.appdistribuidora.ui.MenuScreen
+import com.example.appdistribuidora.ui.screens.TemperatureScreen
 import com.example.appdistribuidora.ui.theme.AppDistribuidoraTheme
 
 class MainActivity : ComponentActivity() {
@@ -38,9 +40,13 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppDistribuidoraTheme {
-                var currentScreen by remember { mutableStateOf<AppScreen>(AppScreen.Login) }
 
-                when (currentScreen) {
+                var currentScreen by remember {
+                    mutableStateOf<AppScreen>(AppScreen.Login)
+                }
+
+                when (val screen = currentScreen) {
+
                     is AppScreen.Login -> LoginScreen(
                         onLoginSuccess = {
                             currentScreen = AppScreen.Menu
@@ -48,16 +54,43 @@ class MainActivity : ComponentActivity() {
                     )
 
                     is AppScreen.Menu -> MenuScreen(
-                        onGoToDespacho = {
-                            currentScreen = AppScreen.Despacho
+                        onGoToCatalogo = {
+                            currentScreen = AppScreen.Catalogo
                         },
+
+                        onGoToDespacho = {
+                            currentScreen = AppScreen.Despacho(null)
+                        },
+
+                        onGoToTemperatura = {
+                            currentScreen = AppScreen.Temperatura
+                        },
+
                         onLogout = {
                             currentScreen = AppScreen.Login
                         }
                     )
 
+                    is AppScreen.Catalogo -> CatalogoScreen(
+                        onGoToDespacho = { montoCalculado ->
+                            currentScreen = AppScreen.Despacho(montoCalculado)
+                        },
+
+                        onBack = {
+                            currentScreen = AppScreen.Menu
+                        }
+                    )
+
+                    is AppScreen.Temperatura -> TemperatureScreen(
+                        onBack = {
+                            currentScreen = AppScreen.Menu
+                        }
+                    )
+
                     is AppScreen.Despacho -> DespachoScreen(
-                        activity = this,
+                        totalCompraInicial = screen.totalCompraInicial,
+                        activity = this@MainActivity,
+
                         onBack = {
                             currentScreen = AppScreen.Menu
                         }
@@ -68,17 +101,17 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun solicitarPermisoUbicacion() {
-        when {
+
+        if (
             ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                Log.d("APP_DESPACHO", "Permiso ya otorgado")
-            }
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
 
-            else -> {
-                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-            }
+            requestPermissionLauncher.launch(
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
         }
     }
 }

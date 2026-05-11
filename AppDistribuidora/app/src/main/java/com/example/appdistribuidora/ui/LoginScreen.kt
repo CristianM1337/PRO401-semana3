@@ -11,6 +11,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 // NUEVO 1: Importamos Firebase Auth
 import com.google.firebase.auth.FirebaseAuth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.ui.text.input.VisualTransformation
 
 @Composable
 fun LoginScreen(
@@ -18,6 +22,7 @@ fun LoginScreen(
 ) {
     var correo by remember { mutableStateOf("") }
     var clave by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
 
     // NUEVO 2: Instanciamos Firebase Auth
@@ -63,7 +68,27 @@ fun LoginScreen(
                     error = ""
                 },
                 label = { Text("Contraseña") },
-                visualTransformation = PasswordVisualTransformation(),
+                visualTransformation = if (passwordVisible) {
+                    VisualTransformation.None
+                } else {
+                    PasswordVisualTransformation()
+                },
+                trailingIcon = {
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(
+                            imageVector = if (passwordVisible) {
+                                Icons.Filled.VisibilityOff
+                            } else {
+                                Icons.Filled.Visibility
+                            },
+                            contentDescription = if (passwordVisible) {
+                                "Ocultar contraseña"
+                            } else {
+                                "Mostrar contraseña"
+                            }
+                        )
+                    }
+                },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -78,11 +103,32 @@ fun LoginScreen(
                         auth.signInWithEmailAndPassword(correo.trim(), clave.trim())
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
-                                    // Si Firebase lo aprueba, pasamos a la siguiente pantalla
                                     onLoginSuccess()
                                 } else {
-                                    // Si falla (clave incorrecta, usuario no existe, etc), mostramos el error
-                                    error = task.exception?.message ?: "Error de autenticación"
+
+                                    error = when (val exception = task.exception) {
+
+                                        is com.google.firebase.auth.FirebaseAuthInvalidUserException ->
+                                            "El usuario no existe"
+
+                                        is com.google.firebase.auth.FirebaseAuthInvalidCredentialsException -> {
+                                            when {
+                                                exception.message?.contains("password", true) == true ->
+                                                    "Contraseña incorrecta"
+
+                                                exception.message?.contains("email", true) == true ->
+                                                    "Correo electrónico no válido"
+
+                                                exception.message?.contains("no user record", true) == true ->
+                                                    "El usuario no existe"
+
+                                                else ->
+                                                    "Correo o contraseña incorrectos"
+                                            }
+                                        }
+
+                                        else -> "Error al iniciar sesión"
+                                    }
                                 }
                             }
                     }

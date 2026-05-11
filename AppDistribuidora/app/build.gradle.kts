@@ -64,4 +64,5 @@ dependencies {
     // Librerías de Autenticación y Base de Datos
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-database")
+    implementation("androidx.compose.material:material-icons-extended")
 }

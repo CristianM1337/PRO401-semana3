@@ -9,25 +9,53 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun MenuScreen(
+    onGoToCatalogo: () -> Unit,
     onGoToDespacho: () -> Unit,
+    onGoToTemperatura: () -> Unit,
     onLogout: () -> Unit
 ) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(24.dp),
+
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Menú principal", style = MaterialTheme.typography.headlineMedium)
+
+        Text(
+            "Menú principal",
+            style = MaterialTheme.typography.headlineMedium
+        )
 
         Spacer(modifier = Modifier.height(24.dp))
+
+        Button(
+            onClick = onGoToCatalogo,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp)
+        ) {
+            Text("🛒 Ver Catálogo de Productos")
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
 
         Button(
             onClick = onGoToDespacho,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Ir a cálculo de despacho")
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Button(
+            onClick = onGoToTemperatura,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("🌡 Gestión de temperatura")
         }
 
         Spacer(modifier = Modifier.height(12.dp))
