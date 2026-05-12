@@ -1,24 +1,25 @@
+
 package com.example.appdistribuidora.ui.screens
 
-import android.media.RingtoneManager
-import android.os.Build
-import android.os.VibrationEffect
-import android.os.Vibrator
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.firebase.database.*
+import androidx.compose.ui.platform.LocalContext
+import android.media.RingtoneManager
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 
 @Composable
 fun TemperatureScreen(
     onBack: () -> Unit
 ) {
+
     var temperaturaF by remember { mutableStateOf<Double?>(null) }
-    var temperaturaC by remember { mutableStateOf<Double?>(null) }
     var error by remember { mutableStateOf<String?>(null) }
 
     val context = LocalContext.current
@@ -28,19 +29,11 @@ fun TemperatureScreen(
 
     LaunchedEffect(Unit) {
         val database = FirebaseDatabase.getInstance()
-        val referencia = database.getReference("camion")
+        val referencia = database.getReference("temperatura")
 
         referencia.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-
-                temperaturaF = snapshot.child("temperaturaF")
-                    .getValue(Double::class.java)
-
-                temperaturaC = snapshot.child("temperaturaC")
-                    .getValue(Double::class.java)
-                    ?: temperaturaF?.let { (it - 32) * 5 / 9 }
-
-                error = null
+                temperaturaF = snapshot.getValue(Double::class.java)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -49,15 +42,20 @@ fun TemperatureScreen(
         })
     }
 
+    val temperaturaC = temperaturaF?.let {
+        (it - 32) * 5 / 9
+
+    }
     val minPermitida = temperaturaMin.toDoubleOrNull() ?: -5.0
     val maxPermitida = temperaturaMax.toDoubleOrNull() ?: 5.0
 
     val fueraDeRango = temperaturaC != null &&
-            (temperaturaC!! < minPermitida || temperaturaC!! > maxPermitida)
+            (temperaturaC < minPermitida || temperaturaC > maxPermitida)
 
     LaunchedEffect(fueraDeRango) {
         if (fueraDeRango) {
 
+            // Vibración
             val vibrator = context.getSystemService(Vibrator::class.java)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -72,6 +70,7 @@ fun TemperatureScreen(
                 vibrator?.vibrate(1000)
             }
 
+            // Sonido de alarma/notificación
             val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
                 ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
@@ -96,32 +95,25 @@ fun TemperatureScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         if (error != null) {
-
             Text(
                 text = "Error: $error",
                 color = MaterialTheme.colorScheme.error
             )
-
-        } else if (temperaturaF == null && temperaturaC == null) {
-
+        } else if (temperaturaF == null) {
             CircularProgressIndicator()
 
             Spacer(modifier = Modifier.height(12.dp))
 
             Text("Cargando temperatura...")
-
         } else {
-
             Text(
-                text = "Temperatura Firebase: %.2f °F"
-                    .format(temperaturaF ?: 0.0)
+                text = "Temperatura Firebase: %.2f °F".format(temperaturaF)
             )
 
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = "Temperatura convertida: %.2f °C"
-                    .format(temperaturaC ?: 0.0)
+                text = "Temperatura convertida: %.2f °C".format(temperaturaC)
             )
         }
 
