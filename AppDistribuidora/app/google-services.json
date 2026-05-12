@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "248978157852",
+    "firebase_url": "https://app-distribucion-pro401-default-rtdb.firebaseio.com",
     "project_id": "app-distribucion-pro401",
     "storage_bucket": "app-distribucion-pro401.firebasestorage.app"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.appdistribuidora"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "248978157852-ihfjbcmt8e0h64iuv5q2u956okfk4rc2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.appdistribuidora",
+            "certificate_hash": "862765704fec8fb0a2df8887859dc02b19a905e4"
+          }
+        },
+        {
+          "client_id": "248978157852-1bhgfeqshr8p77lr198qf3c7vqi1g20b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAes51wk-hvZQ47id4CAJnWKT_aa-de2mY"
@@ -20,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "248978157852-1bhgfeqshr8p77lr198qf3c7vqi1g20b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

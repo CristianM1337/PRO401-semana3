@@ -15,6 +15,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.ui.text.input.VisualTransformation
+// Importaciones de Compose y Actividades
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
+
+// Importaciones de Google Sign-In
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+
+import com.google.firebase.auth.GoogleAuthProvider
+import com.example.appdistribuidora.R
 
 @Composable
 fun LoginScreen(
@@ -27,6 +40,39 @@ fun LoginScreen(
 
     // NUEVO 2: Instanciamos Firebase Auth
     val auth = FirebaseAuth.getInstance()
+
+    val context = LocalContext.current
+// Configuramos las opciones de inicio de sesión de Google
+    val gso = remember {
+        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("248978157852-1bhgfeqshr8p77lr198qf3c7vqi1g20b.apps.googleusercontent.com") // Este string se autogenera con el plugin de google-services
+            .requestEmail()
+            .build()
+    }
+    val googleSignInClient = remember { GoogleSignIn.getClient(context, gso) }
+
+// Manejador del resultado de la actividad de Google
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        try {
+            val account = task.getResult(ApiException::class.java)
+            val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+
+            // Autenticamos en Firebase con la credencial de Google
+            auth.signInWithCredential(credential)
+                .addOnCompleteListener { authTask ->
+                    if (authTask.isSuccessful) {
+                        onLoginSuccess()
+                    } else {
+                        error = "Error al autenticar con Firebase"
+                    }
+                }
+        } catch (e: ApiException) {
+            error = "Error de Google Sign-In: ${e.message}"
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -147,7 +193,20 @@ fun LoginScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text("O", style = MaterialTheme.typography.bodyMedium)
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedButton(
+                onClick = {
+                    launcher.launch(googleSignInClient.signInIntent)
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Iniciar sesión con Google")
+            }
         }
     }
 }
