@@ -18,11 +18,11 @@ import com.example.appdistribuidora.ui.CatalogoScreen
 import com.example.appdistribuidora.ui.DespachoScreen
 import com.example.appdistribuidora.ui.LoginScreen
 import com.example.appdistribuidora.ui.MenuScreen
+import com.example.appdistribuidora.ui.screens.TemperatureScreen
 import com.example.appdistribuidora.ui.theme.AppDistribuidoraTheme
 
 class MainActivity : ComponentActivity() {
 
-    // Gestión de permisos original de Nathalia
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
@@ -40,10 +40,13 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppDistribuidoraTheme {
-                // Estado de navegación
-                var currentScreen by remember { mutableStateOf<AppScreen>(AppScreen.Login) }
+
+                var currentScreen by remember {
+                    mutableStateOf<AppScreen>(AppScreen.Login)
+                }
 
                 when (val screen = currentScreen) {
+
                     is AppScreen.Login -> LoginScreen(
                         onLoginSuccess = {
                             currentScreen = AppScreen.Menu
@@ -54,10 +57,15 @@ class MainActivity : ComponentActivity() {
                         onGoToCatalogo = {
                             currentScreen = AppScreen.Catalogo
                         },
+
                         onGoToDespacho = {
-                            // Entrada manual desde el menú (pasamos null)
                             currentScreen = AppScreen.Despacho(null)
                         },
+
+                        onGoToTemperatura = {
+                            currentScreen = AppScreen.Temperatura
+                        },
+
                         onLogout = {
                             currentScreen = AppScreen.Login
                         }
@@ -65,9 +73,15 @@ class MainActivity : ComponentActivity() {
 
                     is AppScreen.Catalogo -> CatalogoScreen(
                         onGoToDespacho = { montoCalculado ->
-                            // Entrada automática desde catálogo (pasamos el monto)
                             currentScreen = AppScreen.Despacho(montoCalculado)
                         },
+
+                        onBack = {
+                            currentScreen = AppScreen.Menu
+                        }
+                    )
+
+                    is AppScreen.Temperatura -> TemperatureScreen(
                         onBack = {
                             currentScreen = AppScreen.Menu
                         }
@@ -76,6 +90,7 @@ class MainActivity : ComponentActivity() {
                     is AppScreen.Despacho -> DespachoScreen(
                         totalCompraInicial = screen.totalCompraInicial,
                         activity = this@MainActivity,
+
                         onBack = {
                             currentScreen = AppScreen.Menu
                         }
@@ -86,12 +101,17 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun solicitarPermisoUbicacion() {
-        if (ContextCompat.checkSelfPermission(
+
+        if (
+            ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+
+            requestPermissionLauncher.launch(
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
         }
     }
 }
