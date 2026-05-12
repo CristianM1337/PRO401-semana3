@@ -25,7 +25,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[LocalEmulator::path=C:\Users\crist\.android\avd\Small_Phone.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[LocalEmulator::path=C:\Users\Nathalia\.android\avd\Pixel_5.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -76,10 +76,7 @@
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 4
 }</component>
-  <component name="ProjectId" id="3Cg4NZGPplpZz7b07fXYydVyzdA" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectId" id="3DbHxqvZJ9KjuA0Ep95xWDIWQJJ" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -181,11 +178,11 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="d37b5bd3-9747-4055-924c-7d9cce2e0ab8" name="Changes" comment="" />
-      <created>1776793844157</created>
+      <changelist id="75121ce0-3da1-49e2-96ea-c9a70806acca" name="Changes" comment="" />
+      <created>1778544105692</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1776793844157</updated>
+      <updated>1778544105692</updated>
     </task>
     <task id="LOCAL-00001" summary="Corrección en build.gradle.kts de app, se corrigen librerías, se adapta LoginScreen para que requiera usuario y clave utilizando FirebaseAuth">
       <option name="closed" value="true" />
@@ -207,12 +204,12 @@
       <map>
         <entry key="com.example.appdistribuidora">
           <value>
-            <CheckInfo lastCheckTimestamp="1776967476774" />
+            <CheckInfo lastCheckTimestamp="1778545999030" />
           </value>
         </entry>
         <entry key="com.example.appdistribuidora.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1776967476773" />
+            <CheckInfo lastCheckTimestamp="1778545999024" />
           </value>
         </entry>
       </map>
