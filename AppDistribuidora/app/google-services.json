@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "248978157852",
+    "project_id": "app-distribucion-pro401",
+    "storage_bucket": "app-distribucion-pro401.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248978157852:android:793e24c0da20d1439ccad9",
+        "android_client_info": {
+          "package_name": "com.example.appdistribuidora"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAes51wk-hvZQ47id4CAJnWKT_aa-de2mY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
