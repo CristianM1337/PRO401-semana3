@@ -9,7 +9,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-// NUEVO 1: Importamos Firebase Auth
 import com.google.firebase.auth.FirebaseAuth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -27,6 +26,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 
 import com.google.firebase.auth.GoogleAuthProvider
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import com.example.appdistribuidora.R
 
 @Composable
@@ -38,7 +43,6 @@ fun LoginScreen(
     var passwordVisible by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
 
-    // NUEVO 2: Instanciamos Firebase Auth
     val auth = FirebaseAuth.getInstance()
 
     val context = LocalContext.current
@@ -86,7 +90,33 @@ fun LoginScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(140.dp))
+            Spacer(modifier = Modifier.height(80.dp))
+
+            Box(
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(RoundedCornerShape(18.dp))
+                    .background(Color(0xFF16A34A)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "❄", fontSize = 32.sp)
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                text = "DistribuFood",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF111827)
+            )
+            Text(
+                text = "Distribuidora de alimentos",
+                style = MaterialTheme.typography.bodySmall,
+                color = Color(0xFF6B7280)
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
 
             Text(
                 text = "Inicio de sesión",
@@ -145,7 +175,6 @@ fun LoginScreen(
                     if (correo.isBlank() || clave.isBlank()) {
                         error = "Completa todos los campos"
                     } else {
-                        // NUEVO 3: Ejecutamos el login real con Firebase
                         auth.signInWithEmailAndPassword(correo.trim(), clave.trim())
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
@@ -193,11 +222,11 @@ fun LoginScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Text("O", style = MaterialTheme.typography.bodyMedium)
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             OutlinedButton(
                 onClick = {
