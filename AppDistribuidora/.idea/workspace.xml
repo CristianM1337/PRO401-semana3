@@ -10,12 +10,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d37b5bd3-9747-4055-924c-7d9cce2e0ab8" name="Changes" comment="Corrección en build.gradle.kts de app, se corrigen librerías, se adapta LoginScreen para que requiera usuario y clave utilizando FirebaseAuth">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/ui/CatalogoScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/navigation/AppScreen.kt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/navigation/AppScreen.kt.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/ui/DespachoScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/ui/DespachoScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/logic/DespachoUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/logic/DespachoUtils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/navigation/AppScreen.kt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/navigation/AppScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/ui/CatalogoScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/ui/screens/CatalogoScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/ui/LoginScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/ui/LoginScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/ui/MenuScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/ui/MenuScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/ui/screens/TemperatureScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/ui/screens/TemperatureScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/ui/theme/Color.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/ui/theme/Color.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/ui/theme/Theme.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/appdistribuidora/ui/theme/Theme.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,12 +41,44 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="AppDistribuidora" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="AppDistribuidora" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="AppDistribuidora" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="other" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="AppDistribuidora" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="AppDistribuidora" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="AppDistribuidora" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="other" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -71,7 +110,7 @@
     &quot;accountId&quot;: &quot;12a61f46-d53f-4a6d-9b96-7b5263373356&quot;
   }
 }</component>
-  <component name="GradleScriptDefinitionsStorage" workingDir="$PROJECT_DIR$" gradleHome="C:\Users\crist\.gradle\wrapper\dists\gradle-9.3.1-bin\23ovyewtku6u96viwx3xl3oks\gradle-9.3.1" javaHome="C:\Program Files\Android\Android Studio\jbr" gradleVersion="9.3.1" />
+  <component name="GradleScriptDefinitionsStorage" workingDir="$PROJECT_DIR$" gradleHome="C:\Users\Nathalia\.gradle\wrapper\dists\gradle-9.3.1-bin\23ovyewtku6u96viwx3xl3oks\gradle-9.3.1" javaHome="C:\Program Files\Android\Android Studio\jbr" gradleVersion="9.3.1" />
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 4
@@ -86,6 +125,7 @@
     &quot;Android App.app.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
@@ -93,13 +133,15 @@
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/crist/AndroidStudioProjects/PRO401-proyecto-app-movil/AppDistribuidora&quot;
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/crist/AndroidStudioProjects/PRO401-proyecto-app-movil/AppDistribuidora&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;experimental&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="K2MoveDeclarationsDialog.RECENT_PACKAGE_KEY">
-      <recent name="com.example.appdistribuidora.ui.theme" />
       <recent name="com.example.appdistribuidora.ui" />
+      <recent name="com.example.appdistribuidora.ui.theme" />
+      <recent name="com.example.appdistribuidora.ui.screens" />
       <recent name="com.example.appdistribuidora.navigation" />
       <recent name="com.example.appdistribuidora.ui.themeeed" />
     </key>
@@ -178,7 +220,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="75121ce0-3da1-49e2-96ea-c9a70806acca" name="Changes" comment="" />
+      <changelist id="d37b5bd3-9747-4055-924c-7d9cce2e0ab8" name="Changes" comment="Corrección en build.gradle.kts de app, se corrigen librerías, se adapta LoginScreen para que requiera usuario y clave utilizando FirebaseAuth" />
       <created>1778544105692</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -204,12 +246,12 @@
       <map>
         <entry key="com.example.appdistribuidora">
           <value>
-            <CheckInfo lastCheckTimestamp="1778545999030" />
+            <CheckInfo lastCheckTimestamp="1778953155384" />
           </value>
         </entry>
         <entry key="com.example.appdistribuidora.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1778545999024" />
+            <CheckInfo lastCheckTimestamp="1778953155379" />
           </value>
         </entry>
       </map>

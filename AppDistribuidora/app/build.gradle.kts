@@ -69,4 +69,7 @@ dependencies {
     implementation("com.google.maps.android:maps-compose:4.3.3")
     // Dependencia de los servicios de Google Play para Mapas
     implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.maps.android:maps-compose:4.4.1")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.2.0")
 }

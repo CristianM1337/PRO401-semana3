@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Archivo de configuración principal de la aplicación Android -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permite obtener ubicación precisa mediante GPS -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- Permite obtener ubicación aproximada mediante red o WiFi -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Permite conexión a internet para Firebase, Google Sign-In y Google Maps -->
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Permite activar la vibración del dispositivo en alertas -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <!-- Configuración general de la aplicación -->
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -17,16 +27,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppDistribuidora">
 
+        <!-- Clave API utilizada por Google Maps -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDg-Gv3PAIHQu2F26pRjsJ98mcQfIOUDis" />
 
+        <!-- Actividad principal de la aplicación -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="AppDistribuidora"
             android:theme="@style/Theme.AppDistribuidora">
 
+            <!-- Define MainActivity como pantalla inicial de la app -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

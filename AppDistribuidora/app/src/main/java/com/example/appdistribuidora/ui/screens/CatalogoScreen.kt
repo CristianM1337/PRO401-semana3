@@ -1,4 +1,4 @@
-package com.example.appdistribuidora.ui
+package com.example.appdistribuidora.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -16,13 +16,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.appdistribuidora.ui.ItemPedido
 
+// Modelo de datos para representar cada producto del catálogo.
 data class Producto(
     val nombre: String,
     val precio: Double,
     val requiereFrio: Boolean
 )
 
+// Paleta de colores utilizada en la pantalla de catálogo.
 private val ColorPrimary = Color(0xFF16A34A)
 private val ColorPrimaryLight = Color(0xFFDCFCE7)
 private val ColorPrimaryDark = Color(0xFF15803D)
@@ -40,6 +43,8 @@ fun CatalogoScreen(
     onGoToDespacho: (Double, List<ItemPedido>) -> Unit,
     onBack: () -> Unit
 ) {
+    // Lista fija de productos disponibles en la distribuidora.
+    // Cada producto indica si requiere cadena de frío.
     val listaProductos = remember {
         listOf(
             Producto("Mix de mariscos congelados", 5000.0, true),
@@ -53,16 +58,28 @@ fun CatalogoScreen(
         )
     }
 
-    val cantidades = remember { mutableStateListOf(*Array(listaProductos.size) { 0 }) }
+    // Lista de cantidades seleccionadas por producto.
+    // Se inicializa con 0 para cada producto del catálogo.
+    val cantidades = remember {
+        mutableStateListOf(*Array(listaProductos.size) { 0 })
+    }
+
+    // Genera la lista de productos seleccionados para enviarla a la pantalla de despacho.
     val itemsSeleccionados = listaProductos
         .zip(cantidades)
-        .filter { (_, cant) -> cant > 0 }       // descarta los no agregados
-        .map    { (prod, cant) -> ItemPedido(
-            nombre   = prod.nombre,
-            cantidad = cant,
-            precio   = prod.precio * cant        // precio total del ítem
-        )}
-    val totalCompra = listaProductos.zip(cantidades).sumOf { (prod, cant) -> prod.precio * cant }
+        .filter { (_, cantidad) -> cantidad > 0 }
+        .map { (producto, cantidad) ->
+            ItemPedido(
+                nombre = producto.nombre,
+                cantidad = cantidad,
+                precio = producto.precio * cantidad
+            )
+        }
+
+    // Calcula el total de la compra según productos y cantidades seleccionadas.
+    val totalCompra = listaProductos
+        .zip(cantidades)
+        .sumOf { (producto, cantidad) -> producto.precio * cantidad }
 
     Column(
         modifier = Modifier
@@ -70,7 +87,7 @@ fun CatalogoScreen(
             .background(ColorSurface)
             .statusBarsPadding()
     ) {
-        // Header con TopAppBar estilo mockup
+        // Encabezado superior con botón de regreso y nombre de la aplicación.
         Surface(
             color = Color.White,
             shadowElevation = 0.dp
@@ -88,7 +105,9 @@ fun CatalogoScreen(
                         tint = Color(0xFF374151)
                     )
                 }
+
                 Spacer(modifier = Modifier.width(4.dp))
+
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
                         modifier = Modifier
@@ -99,7 +118,9 @@ fun CatalogoScreen(
                     ) {
                         Text("❄", fontSize = 16.sp)
                     }
+
                     Spacer(modifier = Modifier.width(8.dp))
+
                     Column {
                         Text(
                             text = "DistribuFood",
@@ -117,7 +138,7 @@ fun CatalogoScreen(
             }
         }
 
-        // Título catálogo
+        // Título principal de la pantalla de catálogo.
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -139,7 +160,7 @@ fun CatalogoScreen(
 
         Divider(color = ColorBorder, thickness = 0.5.dp)
 
-        // Lista de productos
+        // Lista visual de productos.
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
@@ -147,6 +168,8 @@ fun CatalogoScreen(
             contentPadding = PaddingValues(vertical = 4.dp)
         ) {
             itemsIndexed(listaProductos) { index, producto ->
+
+                // Fila individual de producto.
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -154,7 +177,7 @@ fun CatalogoScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    // Info del producto
+                    // Información del producto: nombre, precio y tipo.
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = producto.nombre,
@@ -162,7 +185,9 @@ fun CatalogoScreen(
                             fontSize = 14.sp,
                             color = Color(0xFF111827)
                         )
+
                         Spacer(modifier = Modifier.height(4.dp))
+
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
                                 text = "$${producto.precio.toInt().format()}",
@@ -170,7 +195,10 @@ fun CatalogoScreen(
                                 fontSize = 13.sp,
                                 color = ColorPrimary
                             )
+
                             Spacer(modifier = Modifier.width(6.dp))
+
+                            // Etiqueta visual según si el producto requiere frío o no.
                             if (producto.requiereFrio) {
                                 Surface(
                                     color = ColorFrioLight,
@@ -201,18 +229,27 @@ fun CatalogoScreen(
                         }
                     }
 
-                    // Controles de cantidad al estilo mockup
+                    // Controles para disminuir o aumentar la cantidad del producto.
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        // Botón menos
+
+                        // Botón para disminuir cantidad.
                         Box(
                             modifier = Modifier
                                 .size(28.dp)
                                 .clip(RoundedCornerShape(6.dp))
-                                .background(if (cantidades[index] > 0) ColorSurface else Color(0xFFF3F4F6)),
+                                .background(
+                                    if (cantidades[index] > 0) {
+                                        ColorSurface
+                                    } else {
+                                        Color(0xFFF3F4F6)
+                                    }
+                                ),
                             contentAlignment = Alignment.Center
                         ) {
                             TextButton(
-                                onClick = { if (cantidades[index] > 0) cantidades[index]-- },
+                                onClick = {
+                                    if (cantidades[index] > 0) cantidades[index]--
+                                },
                                 modifier = Modifier.size(28.dp),
                                 contentPadding = PaddingValues(0.dp)
                             ) {
@@ -225,6 +262,7 @@ fun CatalogoScreen(
                             }
                         }
 
+                        // Cantidad seleccionada actualmente.
                         Text(
                             text = "${cantidades[index]}",
                             modifier = Modifier
@@ -235,7 +273,7 @@ fun CatalogoScreen(
                             color = Color(0xFF111827)
                         )
 
-                        // Botón más — verde
+                        // Botón para aumentar cantidad, con límite máximo de 5 unidades.
                         Box(
                             modifier = Modifier
                                 .size(28.dp)
@@ -244,7 +282,9 @@ fun CatalogoScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             TextButton(
-                                onClick = { if (cantidades[index] < 5) cantidades[index]++ },
+                                onClick = {
+                                    if (cantidades[index] < 5) cantidades[index]++
+                                },
                                 modifier = Modifier.size(28.dp),
                                 contentPadding = PaddingValues(0.dp)
                             ) {
@@ -259,6 +299,7 @@ fun CatalogoScreen(
                     }
                 }
 
+                // Separador entre productos.
                 if (index < listaProductos.size - 1) {
                     Divider(
                         color = ColorBorder,
@@ -269,12 +310,14 @@ fun CatalogoScreen(
             }
         }
 
-        // Panel inferior: total + botones
+        // Panel inferior con total de compra y botones de navegación.
         Surface(
             color = Color.White,
             shadowElevation = 4.dp
         ) {
-            Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)) {
+            Column(
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)
+            ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -286,18 +329,26 @@ fun CatalogoScreen(
                         fontSize = 14.sp,
                         color = Color(0xFF374151)
                     )
+
                     Text(
                         text = "$${totalCompra.toInt().format()}",
                         fontWeight = FontWeight.Bold,
                         fontSize = 22.sp,
-                        color = if (totalCompra > 0) ColorPrimary else ColorTextSecondary
+                        color = if (totalCompra > 0) {
+                            ColorPrimary
+                        } else {
+                            ColorTextSecondary
+                        }
                     )
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
 
+                // Envía el total y los productos seleccionados a la pantalla de despacho.
                 Button(
-                    onClick = { onGoToDespacho(totalCompra, itemsSeleccionados) },
+                    onClick = {
+                        onGoToDespacho(totalCompra, itemsSeleccionados)
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     enabled = totalCompra > 0,
                     shape = RoundedCornerShape(10.dp),
@@ -309,6 +360,7 @@ fun CatalogoScreen(
                     )
                 }
 
+                // Botón secundario para volver al menú principal.
                 TextButton(
                     onClick = onBack,
                     modifier = Modifier.fillMaxWidth()
@@ -324,7 +376,8 @@ fun CatalogoScreen(
     }
 }
 
-// Extensión para formatear números con puntos (formato CLP)
+// Extensión para formatear valores enteros con puntos de miles.
+// Ejemplo: 12000 → 12.000
 private fun Int.format(): String {
     return String.format("%,d", this).replace(',', '.')
 }

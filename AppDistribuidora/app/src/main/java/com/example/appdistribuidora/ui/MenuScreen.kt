@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-// Colores principales del mockup (verde DistribuFood)
+// Paleta de colores utilizada en la interfaz principal de la aplicación.
 private val ColorPrimary = Color(0xFF16A34A)
 private val ColorPrimaryLight = Color(0xFFDCFCE7)
 private val ColorPrimaryDark = Color(0xFF15803D)
@@ -28,6 +28,9 @@ private val ColorSurface = Color(0xFFF9FAFB)
 private val ColorBorder = Color(0xFFE5E7EB)
 private val ColorTextSecondary = Color(0xFF6B7280)
 
+// Pantalla principal de navegación de la aplicación.
+// Permite acceder al catálogo, cálculo de despacho,
+// monitoreo de temperatura y cierre de sesión.
 @Composable
 fun MenuScreen(
     onGoToCatalogo: () -> Unit,
@@ -116,6 +119,7 @@ fun MenuScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            // Componente reutilizable para representar una opción del menú principal.
             MenuItemCard(
                 icon = Icons.Default.ShoppingCart,
                 title = "Ver Catálogo de Productos",
@@ -143,6 +147,7 @@ fun MenuScreen(
                     .padding(vertical = 12.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
+                // Componente visual utilizado para mostrar estadísticas rápidas.
                 StatItem(value = "48", label = "Productos")
                 Divider(
                     modifier = Modifier

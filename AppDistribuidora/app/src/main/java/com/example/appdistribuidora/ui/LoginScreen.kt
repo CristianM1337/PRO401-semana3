@@ -1,70 +1,75 @@
 package com.example.appdistribuidora.ui
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.unit.dp
-import com.google.firebase.auth.FirebaseAuth
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.ui.text.input.VisualTransformation
-// Importaciones de Compose y Actividades
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.runtime.remember
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-
-// Importaciones de Google Sign-In
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.GoogleAuthProvider
-import androidx.compose.foundation.background
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
-import com.example.appdistribuidora.R
 
+// Pantalla de autenticación de usuarios.
+// Permite iniciar sesión mediante correo/contraseña o Google Sign-In.
 @Composable
 fun LoginScreen(
     onLoginSuccess: () -> Unit
 ) {
+    // Estados para los campos del formulario.
     var correo by remember { mutableStateOf("") }
     var clave by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
 
+    // Instancia de Firebase Authentication.
     val auth = FirebaseAuth.getInstance()
-
     val context = LocalContext.current
-// Configuramos las opciones de inicio de sesión de Google
+
+    // Configuración del inicio de sesión con Google.
     val gso = remember {
         GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken("248978157852-1bhgfeqshr8p77lr198qf3c7vqi1g20b.apps.googleusercontent.com") // Este string se autogenera con el plugin de google-services
+            .requestIdToken("248978157852-1bhgfeqshr8p77lr198qf3c7vqi1g20b.apps.googleusercontent.com")
             .requestEmail()
             .build()
     }
-    val googleSignInClient = remember { GoogleSignIn.getClient(context, gso) }
 
-// Manejador del resultado de la actividad de Google
+    // Cliente utilizado para abrir el flujo de autenticación de Google.
+    val googleSignInClient = remember {
+        GoogleSignIn.getClient(context, gso)
+    }
+
+    // Recibe el resultado del inicio de sesión con Google.
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+
         try {
             val account = task.getResult(ApiException::class.java)
             val credential = GoogleAuthProvider.getCredential(account.idToken, null)
 
-            // Autenticamos en Firebase con la credencial de Google
+            // Autentica en Firebase usando la credencial obtenida desde Google.
             auth.signInWithCredential(credential)
                 .addOnCompleteListener { authTask ->
                     if (authTask.isSuccessful) {
@@ -73,17 +78,19 @@ fun LoginScreen(
                         error = "Error al autenticar con Firebase"
                     }
                 }
+
         } catch (e: ApiException) {
             error = "Error de Google Sign-In: ${e.message}"
         }
     }
-
+// Contenedor principal de la interfaz de inicio de sesión.
     Box(
         modifier = Modifier
             .fillMaxSize()
             .imePadding()
             .padding(24.dp)
     ) {
+        // Estructura vertical principal de la pantalla.
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -92,6 +99,7 @@ fun LoginScreen(
         ) {
             Spacer(modifier = Modifier.height(80.dp))
 
+            // Logo visual de la aplicación.
             Box(
                 modifier = Modifier
                     .size(64.dp)
@@ -110,6 +118,7 @@ fun LoginScreen(
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF111827)
             )
+
             Text(
                 text = "Distribuidora de alimentos",
                 style = MaterialTheme.typography.bodySmall,
@@ -125,6 +134,7 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            // Campo para ingresar correo electrónico.
             OutlinedTextField(
                 value = correo,
                 onValueChange = {
@@ -137,6 +147,7 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
+            // Campo para ingresar contraseña con opción de mostrar u ocultar.
             OutlinedTextField(
                 value = clave,
                 onValueChange = {
@@ -150,7 +161,9 @@ fun LoginScreen(
                     PasswordVisualTransformation()
                 },
                 trailingIcon = {
-                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    IconButton(
+                        onClick = { passwordVisible = !passwordVisible }
+                    ) {
                         Icon(
                             imageVector = if (passwordVisible) {
                                 Icons.Filled.VisibilityOff
@@ -170,6 +183,7 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
+            // Inicio de sesión tradicional mediante correo y contraseña.
             Button(
                 onClick = {
                     if (correo.isBlank() || clave.isBlank()) {
@@ -180,29 +194,15 @@ fun LoginScreen(
                                 if (task.isSuccessful) {
                                     onLoginSuccess()
                                 } else {
-
                                     error = when (val exception = task.exception) {
-
-                                        is com.google.firebase.auth.FirebaseAuthInvalidUserException ->
+                                        is FirebaseAuthInvalidUserException ->
                                             "El usuario no existe"
 
-                                        is com.google.firebase.auth.FirebaseAuthInvalidCredentialsException -> {
-                                            when {
-                                                exception.message?.contains("password", true) == true ->
-                                                    "Contraseña incorrecta"
+                                        is FirebaseAuthInvalidCredentialsException ->
+                                            "Correo o contraseña incorrectos"
 
-                                                exception.message?.contains("email", true) == true ->
-                                                    "Correo electrónico no válido"
-
-                                                exception.message?.contains("no user record", true) == true ->
-                                                    "El usuario no existe"
-
-                                                else ->
-                                                    "Correo o contraseña incorrectos"
-                                            }
-                                        }
-
-                                        else -> "Error al iniciar sesión"
+                                        else ->
+                                            "Error al iniciar sesión"
                                     }
                                 }
                             }
@@ -215,6 +215,7 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
+            // Mensaje de error visible si ocurre un problema de autenticación.
             if (error.isNotEmpty()) {
                 Text(
                     text = error,
@@ -228,6 +229,7 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
+            // Inicio de sesión mediante cuenta Google.
             OutlinedButton(
                 onClick = {
                     launcher.launch(googleSignInClient.signInIntent)
