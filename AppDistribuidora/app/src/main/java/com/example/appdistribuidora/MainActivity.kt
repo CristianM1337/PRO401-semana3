@@ -72,8 +72,8 @@ class MainActivity : ComponentActivity() {
                     )
 
                     is AppScreen.Catalogo -> CatalogoScreen(
-                        onGoToDespacho = { montoCalculado ->
-                            currentScreen = AppScreen.Despacho(montoCalculado)
+                        onGoToDespacho = { montoCalculado, itemsSeleccionados ->
+                            currentScreen = AppScreen.Despacho(montoCalculado, itemsSeleccionados)
                         },
 
                         onBack = {
@@ -89,11 +89,9 @@ class MainActivity : ComponentActivity() {
 
                     is AppScreen.Despacho -> DespachoScreen(
                         totalCompraInicial = screen.totalCompraInicial,
-                        activity = this@MainActivity,
-
-                        onBack = {
-                            currentScreen = AppScreen.Menu
-                        }
+                        itemsCarrito       = screen.items,
+                        activity           = this@MainActivity,
+                        onBack             = { currentScreen = AppScreen.Menu }
                     )
                 }
             }

@@ -65,4 +65,8 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-database")
     implementation("androidx.compose.material:material-icons-extended")
+    // Librería de extensión de Google Maps para Jetpack Compose
+    implementation("com.google.maps.android:maps-compose:4.3.3")
+    // Dependencia de los servicios de Google Play para Mapas
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
 }

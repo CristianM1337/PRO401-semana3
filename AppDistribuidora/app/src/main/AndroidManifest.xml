@@ -17,6 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppDistribuidora">
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDg-Gv3PAIHQu2F26pRjsJ98mcQfIOUDis" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

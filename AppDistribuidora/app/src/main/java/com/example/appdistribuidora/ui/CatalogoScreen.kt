@@ -37,7 +37,7 @@ private val ColorTextSecondary = Color(0xFF6B7280)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CatalogoScreen(
-    onGoToDespacho: (Double) -> Unit,
+    onGoToDespacho: (Double, List<ItemPedido>) -> Unit,
     onBack: () -> Unit
 ) {
     val listaProductos = remember {
@@ -54,6 +54,14 @@ fun CatalogoScreen(
     }
 
     val cantidades = remember { mutableStateListOf(*Array(listaProductos.size) { 0 }) }
+    val itemsSeleccionados = listaProductos
+        .zip(cantidades)
+        .filter { (_, cant) -> cant > 0 }       // descarta los no agregados
+        .map    { (prod, cant) -> ItemPedido(
+            nombre   = prod.nombre,
+            cantidad = cant,
+            precio   = prod.precio * cant        // precio total del ítem
+        )}
     val totalCompra = listaProductos.zip(cantidades).sumOf { (prod, cant) -> prod.precio * cant }
 
     Column(
@@ -289,7 +297,7 @@ fun CatalogoScreen(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Button(
-                    onClick = { onGoToDespacho(totalCompra) },
+                    onClick = { onGoToDespacho(totalCompra, itemsSeleccionados) },
                     modifier = Modifier.fillMaxWidth(),
                     enabled = totalCompra > 0,
                     shape = RoundedCornerShape(10.dp),
