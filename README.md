@@ -1,41 +1,79 @@
-# Evaluación Sumativa - Semana 6: 
+# **DistribuFood: Sistema Móvil de Gestión de Despacho y Monitoreo de Temperatura 🚚❄️**
 
-Este repositorio contiene la resolución práctica de la actividad sumativa de la semana 6, enfocada en... 
+Este repositorio contiene el código fuente para "DistribuFood", una aplicación móvil nativa desarrollada en Android (Kotlin/Jetpack Compose) que resuelve el caso de estudio de una empresa distribuidora de alimentos.  
+El sistema integra la gestión de compras, el cálculo dinámico de tarifas de despacho por geolocalización y el monitoreo en tiempo real de la cadena de frío mediante sensores IoT y Firebase.
 
-# 1. Descripción del Negocio
+## **🎯 Objetivos del Proyecto**
 
-Diseño de una solución de software orientada a dispositivos móviles para una empresa distribuidora de alimentos. El núcleo del sistema (core) debe integrar un motor de cálculo dinámico para tarifas de despacho de última milla, condicionado por el subtotal del carrito de compras y la distancia geolocalizada del cliente.
+El objetivo principal es proveer una solución tecnológica móvil que permita a los usuarios:
 
-# 2. Requerimientos Funcionales (RF)
+* Autenticarse de forma segura utilizando sus cuentas de Google (Gmail).  
+* Explorar un catálogo de productos.  
+* Calcular automáticamente el costo de despacho basado en la distancia kilométrica entre la ubicación del usuario y la distribuidora.  
+* Para la gestión interna, monitorear la temperatura de los camiones de reparto y emitir alertas sonoras si se interrumpe la cadena de frío.
 
-Los siguientes requerimientos definen el comportamiento interno del sistema y sus reglas de negocio:
+## **🏗️ Arquitectura y Tecnologías**
 
-    RF01 - Autenticación de Usuarios: El sistema debe permitir el registro y acceso de usuarios clientes exclusivamente mediante el protocolo OAuth o validación de dominio utilizando cuentas de correo de Google (@gmail.com).
+El proyecto se sustenta en una arquitectura de microservicios e IoT, utilizando las siguientes tecnologías:
 
-    RF02 - Restricción de Cobertura Logística: El motor de validación de direcciones debe denegar cualquier solicitud de despacho que supere un radio geográfico de 20 kilómetros desde el centro de distribución.
+* **Frontend (App Móvil):** Android nativo con Kotlin y Jetpack Compose.  
+* **Servicios de Ubicación:** Google Maps SDK for Android y Google Play Services Location (para obtener la latitud/longitud del dispositivo).  
+* **Backend & Base de Datos:** Firebase Realtime Database (para almacenar y recuperar datos del catálogo y lecturas del sensor).  
+* **Autenticación:** Firebase Authentication (Google Sign-In).  
+* **IoT (Simulación):** Tinkercad (Simulación del circuito con NodeMCU ESP8266 y sensor de temperatura TMP36).
 
-    RF03 - Cálculo Dinámico de Despacho: Al momento de procesar el checkout, el sistema calculará la tarifa de envío según la siguiente matriz de reglas:
+## **🚀 Funcionalidades Principales**
 
-        Tramo A: Si el subtotal de compra es >= $50.000, se habilita el servicio de despacho (costo $0).
+### **1\. Autenticación Integrada**
 
-        Tramo B: Si el subtotal de compra está entre $25.000 y $49.999, se aplicará un recargo de $150 por cada kilómetro de distancia.
+Los usuarios inician sesión exclusivamente mediante el proveedor de identidad de Google. Esto simplifica el registro y aumenta la seguridad del acceso.
 
-        Tramo C: Si el subtotal de compra es < $25.000, se aplicará un recargo de $300 por cada kilómetro de distancia.
+### **2\. Catálogo de Productos Sincronizado**
 
-# 3. Requerimientos No Funcionales (RNF)
+La vista del catálogo obtiene sus datos directamente desde Firebase Realtime Database. Esto permite a los administradores actualizar precios o disponibilidad de productos en tiempo real sin necesidad de actualizar la app.
 
-Los siguientes requerimientos definen los atributos de calidad de la arquitectura:
+### **3\. Cálculo de Despacho por Geolocalización**
 
-    RNF01 - Usabilidad y Plataforma: La interfaz de usuario debe estar diseñada de manera responsiva o desarrollada como aplicación nativa/híbrida, optimizando la experiencia UX/UI para su ejecución fluida en dispositivos móviles.
+La aplicación utiliza Google Maps para trazar la ubicación de la distribuidora y la del usuario. Dependiendo del total de la compra y la distancia (calculada internamente), se aplican las siguientes reglas de negocio:
 
-    RNF02 - Rendimiento: El cálculo del costo de envío en el carrito de compras debe ejecutarse con una latencia mínima (inferior a 2 segundos) para no afectar la tasa de conversión durante el proceso de pago.
+* **Compras ≥ $50.000:** Despacho gratuito (hasta 20 km).  
+* **Compras entre $25.000 y $49.999:** Cobro de $150 por kilómetro.  
+* **Compras \< $25.000:** Cobro de $300 por kilómetro.
 
-    RNF03 - Seguridad de Datos: Toda la información personal y ubicación del usuario debe ser transmitida bajo protocolos seguros (HTTPS/TLS).
+### **4\. Monitoreo IoT de Cadena de Frío**
 
-# 4. Historias de usuario
+A través de un sensor simulado que inyecta datos en Firebase, la aplicación cuenta con un panel que lee constantemente el valor de la temperatura en el camión. Si la lectura supera un umbral crítico de grados Celsius, el dispositivo móvil emite una alerta sonora.
 
-    Historia 1: Como cliente, quiero registrarme en la aplicación usando mi cuenta de Gmail para poder acceder a los servicios de compra de manera rápida y segura. Criterio de aceptación: El sistema valida el dominio @gmail.com e impide el registro con otros proveedores.
+## **🛠️ Compilación y Ejecución**
 
-    Historia 2: Como cliente, quiero que el sistema calcule automáticamente el costo de mi envío en base a mi distancia y el monto de mi compra, para saber exactamente cuánto debo pagar. Criterio de aceptación: Si mi compra es de $30.000 y vivo a 10 km, el sistema agrega un cobro de envío de $1.500 al total.
+Para clonar y ejecutar este proyecto localmente, sigue estos pasos:
 
-.
+### **Prerrequisitos**
+
+* Tener instalado [Android Studio](https://developer.android.com/studio) (versión Flamingo o superior recomendada).  
+* Una cuenta de Firebase activa.  
+* Claves API de Google Maps configuradas en la consola de Google Cloud.
+
+### **Pasos de Configuración**
+
+1. **Clonar el repositorio:**  
+   git clone \[https://github.com/cristianm1337/pro401-proyecto-app-movil.git\](https://github.com/cristianm1337/pro401-proyecto-app-movil.git)
+
+2. **Abrir el proyecto en Android Studio:** \* Ve a File \> Open... y selecciona la carpeta del proyecto.  
+3. **Configurar Firebase (google-services.json):**  
+   * El archivo google-services.json original ha sido excluido del repositorio por seguridad. Debes crear un proyecto en tu consola de Firebase, añadir una aplicación Android y descargar el nuevo archivo google-services.json. Colócalo en la ruta app/.  
+4. **Configurar la API Key de Google Maps:**  
+   * Asegúrate de agregar tu API Key de Google Maps en el archivo AndroidManifest.xml (dentro del tag \<application\>) o mediante la inyección segura desde tu archivo local.properties.  
+5. **Sincronizar Gradle:**  
+   * Haz clic en *Sync Project with Gradle Files*.  
+6. **Ejecutar:**  
+   * Conecta un dispositivo físico o inicia un emulador de Android y presiona el botón *Run* (Shift \+ F10).
+
+## **Plan de Pruebas**
+
+El sistema ha sido sometido a un riguroso plan de pruebas documentado, incluyendo 10 casos de uso que validan:
+
+* La correcta denegación/aceptación de la autenticación de Google.  
+* La exactitud en el cálculo kilométrico y su conversión matemática a tarifas.  
+* La correcta deserialización de los datos (como la conversión de la temperatura en Firebase de °F a °C).  
+* Comportamiento ante la negación de permisos de GPS por parte del usuario.
